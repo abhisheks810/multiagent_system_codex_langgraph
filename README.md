@@ -2,7 +2,7 @@
 
 ## Architecture: LangGraph Multi-Agent Orchestration
 
-<img src="docs/diagram/langgraph_pipeline.svg" alt="LangGraph Multi-Agent Orchestration" width="960" />
+<img src="docs/diagram/langgraph_pipeline.png" alt="LangGraph Multi-Agent Orchestration" width="960" />
 
 **Flow:** Planner (RAG) → UI/UX | Tester | QA Geo (parallel) → Integrator (gpt-5) → Product Manager → Open MR/PR  
 **MCP Tools:** Filesystem + Git + GitHub/GitLab (for reads/writes, branch/commit/push, PR)
