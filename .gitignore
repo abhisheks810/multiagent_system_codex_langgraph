@@ -23,3 +23,9 @@ venv/
 **/.coverage
 **/htmlcov/
 EOF
+
+# agent logs (local only)
+.agent_logs/
+workspace/.agent_logs/
+**/.agent_logs/
+*.ndjson

@@ -1,5 +1,12 @@
 # LangGraph Multi-Agent System (Planner uses RAG + Product Manager)
 
+## Architecture: LangGraph Multi-Agent Orchestration
+
+<img src="docs/diagram/langgraph_pipeline.svg" alt="LangGraph Multi-Agent Orchestration" width="960" />
+
+**Flow:** Planner (RAG) → UI/UX | Tester | QA Geo (parallel) → Integrator (gpt-5) → Product Manager → Open MR/PR  
+**MCP Tools:** Filesystem + Git + GitHub/GitLab (for reads/writes, branch/commit/push, PR)
+
 This version upgrades the LangGraph system with:
 - **RAG-based Planner**: reads your repo’s _Project Status_ markdown to ground planning.
 - **Product Manager agent**: after integration, updates the **Project Status** markdown with a dated entry (feature details, pitfalls, final summary).
@@ -63,3 +70,13 @@ Keep signatures intact so nodes don’t change.
 - Integrator asks LLM for **full file contents** per path; low temperature for determinism.
 - Product Manager writes a **dated** section + **final summary** to project status.
 - Planner includes project status content as RAG context to avoid re‑inventing the plan.
+
+## Direct Chat with Individual Agents (Planner / Tester / UI/UX / QA Geo)
+
+Sometimes you just want to **ask one agent a question** or debug a failing change without running the full multi-agent pipeline. Use the dedicated CLI:
+
+```bash
+docker compose exec langgraph python -m app.agent_chat --role <planner|tester|uiux|qa_geo> \
+  --feature "optional feature context" \
+  --message "your question or error details" \
+  [--file path/one.ext --file path/two.ext ...]

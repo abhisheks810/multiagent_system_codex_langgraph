@@ -1,5 +1,6 @@
 import sys, os
 from app.graph import build_graph
+from app.utils.logging import log_event
 
 def _read_feature_from_stdin() -> str:
     print("Enter feature description (end with blank line):")
@@ -22,6 +23,19 @@ def main():
 
     graph = build_graph()
     final = graph.invoke({"feature": feature})
+    parts = []
+    if final.get("integration_report"):
+        parts.append("## Integration Report\n" + final["integration_report"])
+    if final.get("project_status_path"):
+        parts.append(f"\n\n**Project Status updated:** `{final['project_status_path']}`")
+        if final.get("project_status_preview"):
+            parts.append("\n\n## Project Status Preview\n" + final["project_status_preview"])
+    if final.get("mr"):
+        parts.append(f"\n\n**MR/PR artifact:** {final['mr']}")
+
+    summary_response = "\n".join(parts) or "(no output produced)"
+    log_event(query=feature, response=summary_response, source="pipeline")
+
 
     print("\n=== Integration Report ===")
     print(final.get("integration_report", ""))

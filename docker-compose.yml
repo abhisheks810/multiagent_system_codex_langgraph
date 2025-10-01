@@ -8,5 +8,6 @@ services:
       - REPO_PATH=/workspace/repo
     volumes:
       - ${HOST_REPO_PATH}:/workspace/repo
+      - ${HOST_AGENT_DIR:-.}:/workspace/agent_host
     tty: true
     stdin_open: true
